@@ -18,8 +18,9 @@ def find_drug(update: Update, context: CallbackContext) -> None:
 
     try:
         drug = Drug.objects.get(names__contains=[user_text])
+        categories = ' '.join(drug.categories.values_list('smile', flat=True))
 
-        text_parts = [f'Название: {user_text}']
+        text_parts = [f'Название: {user_text} {categories}']
 
         if len(drug.names) > 1:
             analogs = ', '.join(filter(lambda name: name != user_text, drug.names))
