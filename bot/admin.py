@@ -1,15 +1,16 @@
 from django.contrib import admin
 
-from bot.models import Drug, Category
+from bot.models import Medicine, MedicineName
 
-@admin.register(Drug)
+
+@admin.register(Medicine)
 class DrugAdmin(admin.ModelAdmin):
-    list_display = ('names',)
-    search_fields = ['names',]
+    pass
 
 
-@admin.register(Category)
+@admin.register(MedicineName)
 class CategorAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ['name',]
-
+    list_display = ("name",)
+    search_fields = [
+        "name",
+    ]
