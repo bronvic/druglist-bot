@@ -1,0 +1,50 @@
+version: '3.8'
+
+x-environment: &default_db_env
+  POSTGRES_DB: ${POSTGRES_DB}
+  POSTGRES_USER: ${POSTGRES_USER}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      <<: *default_db_env
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+    depends_on:
+      - db
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "manage.py", "bot"]
+    volumes:
+      - .:/app
+    environment:
+      <<: *default_db_env
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      <<: *default_db_env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

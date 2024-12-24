@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "med_list2"
+name = "med_list"
 version = "0.1.0"
-description = "Telegram bot with unworking drugs"
-authors = ["Voronwe <Voronwe.S@protonmail.com>"]
+description = "Telegram bot with unworking medicines"
+authors = ["Voronwe <mail@voronwe.me>"]
 license = "MIT"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -14,8 +15,6 @@ beautifulsoup4 = "^4.12.3"
 lxml = "^5.3.0"
 python-telegram-bot = "^21.6"
 asgiref = "^3.8.1"
-
-[tool.poetry.dev-dependencies]
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"
