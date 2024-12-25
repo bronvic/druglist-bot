@@ -1,6 +1,6 @@
 steps:
-  - name: gcr.io/cloud-builders/gsutil
-    args: ["-m", "rsync", "-r", "-c", "-d", ".", "gs://medicine-bot-445314_cloudbuild/"]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/medicine-bot-445314/medlist_image', '.']
 
 options:
   logging: CLOUD_LOGGING_ONLY
