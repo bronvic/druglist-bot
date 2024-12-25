@@ -1,4 +1,8 @@
 steps:
+  # Step to list files in the source directory
+  - name: 'gcr.io/cloud-builders/ls'
+    args: [ '-R', '.' ]  # List files recursively in the current directory
+
   - name: gcr.io/cloud-builders/gsutil
     args: ["-m", "rsync", "-r", "-c", "-d", ".", "gs://medicine-bot-445314_cloudbuild/"]
 
