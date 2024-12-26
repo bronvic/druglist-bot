@@ -1,11 +1,9 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/medicine-bot-445314/medlist_image', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/medlist_image', '.']
 
 options:
   logging: CLOUD_LOGGING_ONLY
 
-artifacts:
-  objects:
-    location: 'gs://medicine-bot-445314_cloudbuild/'
-    paths: ['medlist']
+images:
+- 'gcr.io/$PROJECT_ID/medlist_image'
