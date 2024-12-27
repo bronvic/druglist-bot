@@ -1,58 +1,14 @@
 steps:
   # Build the app service
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/medlist_image', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/medlist_image', '--file', 'Dockerfile', '.']
 
   # Push the built images to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/medlist_image']
-
-  # Connect to GCE server and pull new image
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['compute', 'ssh', '$_SERVER', '--zone', '$_ZONE', '--command', 'gcloud docker -- pull gcr.io/$PROJECT_ID/medlist_image:latest']
-
-  # Connect to server and stop current container
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['compute', 'ssh', '$_SERVER', '--zone', '$_ZONE',  '--command', 'docker stop medlist_image']
-
-  # Connect to server and stop current container
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['compute', 'ssh', '$_SERVER', '--zone', '$_ZONE',  '--command', 'docker rm medlist_image']
-
-    # Connect to server and start new container
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['compute', 'ssh', '$_SERVER', '--zone', '$_ZONE',  '--command', 'docker run  --restart always --name medlist_image -d -p 8000:8000  --log-driver=gcplogs  gcr.io/$PROJECT_ID/medlist_image:latest']
-
-#  # Deploy the app service to Cloud Run
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    args: [
-#      'run', 'deploy', 'app',
-#      '--image', 'gcr.io/$PROJECT_ID/medlist_image',
-#      '--platform', 'managed',
-#      '--region', 'europe-north1',
-#      '--set-env-vars', 'DB_HOST=${_DB_HOST},DB_PORT=${_DB_PORT}',
-#      '--port', '8000',
-#      '--allow-unauthenticated'
-#    ]
-#
-#  # Deploy the bot service to Cloud Run
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    args: [
-#      'run', 'deploy', 'bot',
-#      '--image', 'gcr.io/$PROJECT_ID/medlist_image',
-#      '--platform', 'managed',
-#      '--region', 'europe-north1',
-#      '--set-env-vars', 'TELEGRAM_TOKEN=${_TELEGRAM_TOKEN},DB_HOST=${_DB_HOST},DB_PORT=${_DB_PORT}',
-#      '--allow-unauthenticated'
-#    ]
-
 
 options:
   logging: CLOUD_LOGGING_ONLY
 
 images:
   - 'gcr.io/$PROJECT_ID/medlist_image'
-
-substitutions:
-  _SERVER: 'instance-20241226-211816'
-  _ZONE: 'europe-north1'
