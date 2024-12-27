@@ -5,11 +5,34 @@ steps:
 
   # Push the built images to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/app']
+    args: ['push', 'gcr.io/$PROJECT_ID/medlist_image']
+
+  # Deploy the app service to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'run', 'deploy', 'app',
+      '--image', 'gcr.io/$PROJECT_ID/app',
+      '--platform', 'managed',
+      '--region', 'europe-north1-b',
+      '--set-env-vars', 'DB_HOST=${_DB_HOST},DB_PORT=${_DB_PORT}',
+      '--port', '8000',
+      '--allow-unauthenticated'
+    ]
+
+  # Deploy the bot service to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'run', 'deploy', 'bot',
+      '--image', 'gcr.io/$PROJECT_ID/app',
+      '--platform', 'managed',
+      '--region', 'europe-north1-b',
+      '--set-env-vars', 'TELEGRAM_TOKEN=${_TELEGRAM_TOKEN},DB_HOST=${_DB_HOST},DB_PORT=${_DB_PORT}',
+      '--allow-unauthenticated'
+    ]
 
 
 options:
   logging: CLOUD_LOGGING_ONLY
 
 images:
-  - 'gcr.io/$PROJECT_ID/app'
+  - 'gcr.io/$PROJECT_ID/medlist_image'
