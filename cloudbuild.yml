@@ -13,7 +13,7 @@ steps:
       'run', 'deploy', 'app',
       '--image', 'gcr.io/$PROJECT_ID/medlist_image',
       '--platform', 'managed',
-      '--region', 'europe-north1-b',
+      '--region', 'europe-north1',
       '--set-env-vars', 'DB_HOST=${_DB_HOST},DB_PORT=${_DB_PORT}',
       '--port', '8000',
       '--allow-unauthenticated'
@@ -25,7 +25,7 @@ steps:
       'run', 'deploy', 'bot',
       '--image', 'gcr.io/$PROJECT_ID/medlist_image',
       '--platform', 'managed',
-      '--region', 'europe-north1-b',
+      '--region', 'europe-north1',
       '--set-env-vars', 'TELEGRAM_TOKEN=${_TELEGRAM_TOKEN},DB_HOST=${_DB_HOST},DB_PORT=${_DB_PORT}',
       '--allow-unauthenticated'
     ]
