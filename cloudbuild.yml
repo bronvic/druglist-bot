@@ -1,9 +1,15 @@
 steps:
+  # Build the app service
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/medlist_image', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/app', '--file', 'Dockerfile', '.']
+
+  # Push the built images to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/app']
+
 
 options:
   logging: CLOUD_LOGGING_ONLY
 
 images:
-- 'gcr.io/$PROJECT_ID/medlist_image'
+  - 'gcr.io/$PROJECT_ID/app'
