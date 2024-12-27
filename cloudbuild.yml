@@ -54,5 +54,5 @@ images:
   - 'gcr.io/$PROJECT_ID/medlist_image'
 
 substitutions:
-  _SERVER: '35.228.182.24'
+  _SERVER: 'instance-20241226-211816'
   _ZONE: 'europe-north1'
