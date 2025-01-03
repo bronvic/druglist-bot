@@ -7,6 +7,17 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/medlist_image']
 
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud run deploy medlist-service \
+          --image gcr.io/$PROJECT_ID/medlist_image \
+          --platform managed \
+          --region europe-north1 \
+          --allow-unauthenticated
 options:
   logging: CLOUD_LOGGING_ONLY
 
